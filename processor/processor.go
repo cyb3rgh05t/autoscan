@@ -7,8 +7,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/cloudbox/autoscan"
-	"github.com/cloudbox/autoscan/migrate"
+	"github.com/cyb3rgh05t/autoscan"
+	"github.com/cyb3rgh05t/autoscan/migrate"
 
 	"golang.org/x/sync/errgroup"
 )

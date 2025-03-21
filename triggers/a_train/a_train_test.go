@@ -12,7 +12,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"github.com/cloudbox/autoscan"
+	"github.com/cyb3rgh05t/autoscan"
 )
 
 func TestHandler(t *testing.T) {

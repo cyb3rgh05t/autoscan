@@ -1,4 +1,4 @@
-module github.com/cloudbox/autoscan
+module github.com/cyb3rgh05t/autoscan
 
 go 1.19
 

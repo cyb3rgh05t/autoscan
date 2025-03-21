@@ -14,7 +14,7 @@ import (
 	"github.com/robfig/cron/v3"
 	"github.com/rs/zerolog"
 
-	"github.com/cloudbox/autoscan"
+	"github.com/cyb3rgh05t/autoscan"
 )
 
 const (
