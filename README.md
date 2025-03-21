@@ -1,6 +1,3 @@
-Autoscan, [A-Train](https://github.com/m-rots/a-train) and [Bernard](https://github.com/m-rots/bernard-rs) are no longer actively maintained. All projects are considered feature frozen and when compatibility with Google Drive, Plex, Emby, Jellyfin and the -arrs inevitably breaks, no fixes will be provided and such an event will officially mark these projects as end of life.
-As all three projects have permissible open source licenses, feel free to start a fork and continue development. Ownership of these repositories as well as the Docker images will not be transferred.
-
 # Autoscan
 
 Autoscan replaces the default Plex and Emby behaviour for picking up file changes on the file system.
@@ -74,8 +71,8 @@ The following config only defines rewrite paths, this should not be used directl
 triggers:
   sonarr:
     - rewrite:
-          # /tv contains folders with tv shows
-          # This path is used within the Sonarr Docker container
+        # /tv contains folders with tv shows
+        # This path is used within the Sonarr Docker container
         - from: /tv/
 
           # /mnt/unionfs/Media/TV links to the same folder, though from the host OS
@@ -85,9 +82,9 @@ triggers:
 targets:
   plex:
     - rewrite:
-          # Same folder as above, accessible by Autoscan.
-          # Note how we strip the "TV" part,
-          # as we want both Movies and TV.
+        # Same folder as above, accessible by Autoscan.
+        # Note how we strip the "TV" part,
+        # as we want both Movies and TV.
         - from: /mnt/unionfs/Media/
 
           # This path is used within the Plex Docker container
@@ -97,10 +94,10 @@ targets:
 Let's take a look at the journey of the path `/tv/Westworld/Season 1/s01e01.mkv` coming from Sonarr.
 
 1. Sonarr's path is translated to a path local to Autoscan. \
-  `/mnt/unionfs/Media/TV/Westworld/Season 1/s01e01.mkv`
+   `/mnt/unionfs/Media/TV/Westworld/Season 1/s01e01.mkv`
 2. The path is accessed by Autoscan to check whether it exists and adds it to the datastore.
 3. Autoscan's path is translated to a path local to Plex. \
-  `/data/TV/Season 1/s01e01.mkv`
+   `/data/TV/Season 1/s01e01.mkv`
 
 This should be all that's needed to get you going. Good luck!
 
@@ -116,7 +113,7 @@ Autoscan currently supports the following triggers:
 
 - Inotify: Listens for changes on the file system. \
   **This should not be used on top of RClone mounts.** \
-  *Bugs may still exist.*
+  _Bugs may still exist._
 
 - Manual: When you want to scan a path manually.
 
@@ -126,10 +123,10 @@ Autoscan currently supports the following triggers:
 All triggers support:
 
 - Trigger-wide priority: higher priorities are processed sooner. \
-  *Defaults to 0.*
+  _Defaults to 0._
 
 - RegExp-based rewriting rules: translate a path given by the trigger to a path on the local file system. \
-  *If the paths are identical between the trigger and the local file system, then the `rewrite` field should be ignored.*
+  _If the paths are identical between the trigger and the local file system, then the `rewrite` field should be ignored._
 
 ### A-Train
 
@@ -202,6 +199,7 @@ To add your webhook to Sonarr, Radarr, Readarr or Lidarr, do:
 #### The latest events
 
 Autoscan also supports the following events in the latest versions of Radarr and Sonarr:
+
 - `Rename`
 - `On Movie Delete` and `On Series Delete`
 - `On Movie File Delete` and `On Episode File Delete`
@@ -254,25 +252,25 @@ triggers:
 
       # rewrite inotify path to unified filesystem
       rewrite:
-            - from: ^/mnt/local/Media/
-              to: /mnt/unionfs/Media/
+        - from: ^/mnt/local/Media/
+          to: /mnt/unionfs/Media/
 
       # local filesystem paths to monitor
       paths:
         - path: /mnt/local/Media
 
   lidarr:
-    - name: lidarr   # /triggers/lidarr
+    - name: lidarr # /triggers/lidarr
       priority: 1
 
   radarr:
-    - name: radarr   # /triggers/radarr
+    - name: radarr # /triggers/radarr
       priority: 2
     - name: radarr4k # /triggers/radarr4k
       priority: 5
 
   readarr:
-    - name: readarr  # /triggers/readarr
+    - name: readarr # /triggers/readarr
       priority: 1
 
   sonarr:
@@ -291,7 +289,7 @@ triggers:
 Triggers pass the Scans they receive to the processor.
 The processor then saves the Scans to its datastore.
 
-*The processor uses SQLite as its datastore, feel free to hack around!*
+_The processor uses SQLite as its datastore, feel free to hack around!_
 
 In a separate process, the processor selects Scans from the datastore.
 It will always group files belonging to the same folder together and it waits until all the files in that folder are older than the `minimum-age`, which defaults to 10 minutes.
@@ -351,7 +349,7 @@ The `minimum-age`, `scan-delay` and `scan-stats` fields should be given a string
 - `1m30s` if the min-age should be set at 1 minute and 30 seconds.
 - `1h` if the min-age should be set at 1 hour.
 
-*Please do not forget the `s`, `m` or `h` suffix, otherwise the time unit defaults to nanoseconds.*
+_Please do not forget the `s`, `m` or `h` suffix, otherwise the time unit defaults to nanoseconds._
 
 Scan stats will print the following information at a configured interval:
 
@@ -411,7 +409,7 @@ targets:
 
 - URL. The URL can link to the docker container directly, the localhost or a reverse proxy sitting in front of Emby.
 - Token. We need an Emby API Token to make requests on your behalf. [This article](https://github.com/MediaBrowser/Emby/wiki/Api-Key-Authentication) should help you out. \
-  *It's a bit out of date, but I'm sure you will manage!*
+  _It's a bit out of date, but I'm sure you will manage!_
 - Rewrite. If Emby is not running on the host OS, but in a Docker container (or Autoscan is running in a Docker container), then you need to rewrite paths accordingly. Check out our [rewriting section](#rewriting-paths) for more info.
 
 ### Jellyfin
@@ -432,7 +430,7 @@ targets:
 
 - URL. The URL can link to the docker container directly, the localhost or a reverse proxy sitting in front of Jellyfin.
 - Token. We need a Jellyfin API Token to make requests on your behalf. [This article](https://github.com/MediaBrowser/Emby/wiki/Api-Key-Authentication) should help you out. \
-  *It's a bit out of date, but I'm sure you will manage!*
+  _It's a bit out of date, but I'm sure you will manage!_
 - Rewrite. If Jellyfin is not running on the host OS, but in a Docker container (or Autoscan is running in a Docker container), then you need to rewrite paths accordingly. Check out our [rewriting section](#rewriting-paths) for more info.
 
 ### Autoscan
@@ -452,7 +450,7 @@ targets:
 
 ## Full config file
 
-With the examples given in the [triggers](#triggers), [processor](#processor) and [targets](#targets) sections, here is what your full config file *could* look like:
+With the examples given in the [triggers](#triggers), [processor](#processor) and [targets](#targets) sections, here is what your full config file _could_ look like:
 
 ```yaml
 # <- processor ->
@@ -477,17 +475,17 @@ port: 3030
 
 triggers:
   lidarr:
-    - name: lidarr   # /triggers/lidarr
+    - name: lidarr # /triggers/lidarr
       priority: 1
 
   radarr:
-    - name: radarr   # /triggers/radarr
+    - name: radarr # /triggers/radarr
       priority: 2
     - name: radarr4k # /triggers/radarr4k
       priority: 5
 
   readarr:
-    - name: readarr  # /triggers/readarr
+    - name: readarr # /triggers/readarr
       priority: 1
 
   sonarr:
@@ -543,7 +541,7 @@ host:
 Autoscan has an accompanying docker image which can be found on [Docker Hub](https://hub.docker.com/r/cloudb0x/autoscan).
 
 Autoscan requires access to all files being passed between the triggers and the targets. \
-*Just mount the source directory, for many people this is `/mnt/unionfs`.*
+_Just mount the source directory, for many people this is `/mnt/unionfs`._
 
 Make sure these files are available within the Autoscan container.
 Remember that you MUST use [rewriting rules](#rewriting-paths) if paths are not identical between triggers, autoscan and targets. These rules can be set from the config for each trigger and target individually.
@@ -552,10 +550,10 @@ Remember that you MUST use [rewriting rules](#rewriting-paths) if paths are not 
 
 Autoscan's Docker image provides various versions that are available via tags. The `latest` tag usually provides the latest stable version. Others are considered under development and caution must be exercised when using them.
 
-| Tag | Description |
-| :----: | --- |
+|  Tag   | Description                                        |
+| :----: | -------------------------------------------------- |
 | latest | Latest stable version from a tagged GitHub release |
-| master | Most recent GitHub master commit |
+| master | Most recent GitHub master commit                   |
 
 #### Usage
 
@@ -575,13 +573,13 @@ docker run \
 
 Autoscan's Docker image supports the following parameters.
 
-| Parameter | Function |
-| :----: | --- |
-| `-p 3030:3030` | The port used by Autoscan's webhook triggers |
-| `-e PUID=1000` | The UserID to run the Autoscan binary as |
-| `-e PGID=1000` | The GroupID to run the Autoscan binary as |
+|         Parameter         | Function                                                                      |
+| :-----------------------: | ----------------------------------------------------------------------------- |
+|      `-p 3030:3030`       | The port used by Autoscan's webhook triggers                                  |
+|      `-e PUID=1000`       | The UserID to run the Autoscan binary as                                      |
+|      `-e PGID=1000`       | The GroupID to run the Autoscan binary as                                     |
 | `-e AUTOSCAN_VERBOSITY=0` | The Autoscan logging verbosity level to use. (0 = info, 1 = debug, 2 = trace) |
-| `-v /config` | Autoscan's config and database file |
+|       `-v /config`        | Autoscan's config and database file                                           |
 
 Any other volumes can be referenced within Autoscan's config file `config.yml`, assuming it has been specified as a volume.
 
