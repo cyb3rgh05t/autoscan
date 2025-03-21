@@ -1,4 +1,4 @@
-name: Build
+name: Docker Build
 
 on:
   push:
@@ -18,9 +18,9 @@ on:
         description: "Tag to build (e.g., v1.2.0)"
         required: false
       branch:
-        description: "Branch to build (main or dev)"
+        description: "Branch to build"
         required: false
-        default: "main"
+        default: "master"
 
 env:
   REGISTRY: ghcr.io
