@@ -101,14 +101,32 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
-      # Build
-      - name: Build Project
+      # Build binaries for all target architectures
+      - name: Build Binaries for All Architectures
         run: |
-          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
-            go build -v -ldflags "-X main.version=${{ env.RELEASE_VERSION }}"
-          else
-            go build -v -ldflags "-X main.version=dev-${{ github.sha }}"
-          fi
+          # Make sure the dist directory exists
+          mkdir -p dist
+
+          # Build for linux/amd64
+          GOOS=linux GOARCH=amd64 CGO_ENABLED=0 \
+            go build -o dist/autoscan_linux_amd64/autoscan \
+            -ldflags "-s -w -X main.Version=${{ env.RELEASE_VERSION }} -X main.GitCommit=${{ github.sha }} -X main.Timestamp=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+            ./cmd/autoscan
+
+          # Build for linux/arm64
+          GOOS=linux GOARCH=arm64 CGO_ENABLED=0 \
+            go build -o dist/autoscan_linux_arm64/autoscan \
+            -ldflags "-s -w -X main.Version=${{ env.RELEASE_VERSION }} -X main.GitCommit=${{ github.sha }} -X main.Timestamp=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+            ./cmd/autoscan
+
+          # Build for linux/arm/v7
+          GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=0 \
+            go build -o dist/autoscan_linux_arm_7/autoscan \
+            -ldflags "-s -w -X main.Version=${{ env.RELEASE_VERSION }} -X main.GitCommit=${{ github.sha }} -X main.Timestamp=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+            ./cmd/autoscan
+
+          # List generated files for debugging
+          find dist -type f | sort
 
       # Tests
       - name: Run Tests
